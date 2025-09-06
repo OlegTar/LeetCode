@@ -19,8 +19,9 @@ public class Solution {
             }
         }
 
-        var k = nums.Length - 1 - maxIndex;        
-        var offsetToRight = nums.Length - k;
+        // var k = nums.Length - 1 - maxIndex;        
+        // var offsetToRight = nums.Length - k;
+        var offsetToRight = 1 + maxIndex;
 
         left = 0;
         right = nums.Length;
