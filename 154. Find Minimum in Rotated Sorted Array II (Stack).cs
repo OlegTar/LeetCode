@@ -13,7 +13,7 @@ public class Solution {
                 continue;
             }
 
-            while (left <= right && left >= 0 && left < nums.Length && right >= 0 && right < nums.Length)
+            while (left <= right)
             {
                 var mid = left + (right - left) / 2;
                 
