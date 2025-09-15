@@ -1,0 +1,39 @@
+public class Solution {
+    public int MySqrt(int x) {
+        var left = 0;
+        var right = x;
+        var answer = 0;
+        while (left <= right)
+        {
+            var mid = left + (right - left) / 2;
+            int square;
+            checked 
+            {
+                try 
+                {
+                    square = mid * mid;
+                }
+                catch (OverflowException)
+                {
+                    right = mid - 1;
+                    continue;
+                }
+            }
+
+            if (square == x) 
+            {
+                return mid;
+            }
+            else if (square < x)
+            {
+                answer = mid;
+                left = mid + 1;
+            }
+            else 
+            {
+                right = mid - 1;
+            }
+        }
+        return answer;
+    }
+}
