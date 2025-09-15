@@ -6,10 +6,8 @@ public class Solution {
         while (left <= right)
         {
             var mid = left + (right - left) / 2;
-            //Console.WriteLine($"mid = {mid}");
-
             var square = (double)mid * (double)mid;
-            //Console.WriteLine($"square = {square}");
+
             if (square == x) 
             {
                 return mid;
