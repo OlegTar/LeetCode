@@ -3,14 +3,15 @@ public class Solution {
         Array.Sort(nums);
         var n = nums.Length - 3;        
         var total = 0;
-        var i = 0;
-        for (; i <= n && nums[i] == 0; i++);
+        
+        //var i = 0;
+        //for (; i <= n && nums[i] == 0; i++);
 
-        for (; i <= n; i++)
+        for (var i = 0; i <= n; i++)
         {
             var a = nums[i];
             var n2 = n + 1;
-            for (var j = i + 1; j <= n2; j++)
+            for (var j = i + 1; j <= n2 && nums[i] != 0; j++)
             {
                 var b = nums[j];
                 var sum = a + b;
