@@ -48,6 +48,7 @@ public class Solution {
         {
             var combCopy = new List<int>(combination);
             result.Add(combCopy);
+            return;
         }
 
         if (index >= candidates.Length)
