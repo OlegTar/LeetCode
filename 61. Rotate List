@@ -1,0 +1,60 @@
+/**
+ Given the head of a linked list, rotate the list to the right by k places.
+Example 1:
+
+Input: head = [1,2,3,4,5], k = 2
+Output: [4,5,1,2,3]
+Example 2:
+
+Input: head = [0,1,2], k = 4
+Output: [2,0,1]
+ 
+Constraints:
+
+The number of nodes in the list is in the range [0, 500].
+-100 <= Node.val <= 100
+0 <= k <= 2 * 109
+*/
+public class Solution {
+    public ListNode RotateRight(ListNode head, int k) {
+        if (k == 0 || head == null || head.next == null)
+        {
+            return head;
+        }
+        var count = 2;
+        var prev = head;
+        var tail = head.next;
+        while (tail.next != null)
+        {
+            prev = tail;
+            tail = tail.next;
+            count++;
+        }
+
+        k = k % count;
+        if (k == 0)
+        {
+            return head;    
+        }
+
+        tail.next = head;
+        prev.next = null;
+        head = tail;
+        
+        k--;
+        for (var i = 0; i < k; i++)
+        {
+            prev = head;
+            tail = head.next;
+            while (tail.next != null)
+            {
+                prev = tail;
+                tail = tail.next;
+            }
+            tail.next = head;
+            prev.next = null;
+            head = tail;
+        }
+        return head;
+    }
+}
