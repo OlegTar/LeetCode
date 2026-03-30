@@ -38,8 +38,9 @@ func firstPalindrome(words []string) string {
 
 func isPalindrome(word string) bool {
     //word := []rune(w) //for other languages
-    left := 0;
-    right := len(word) - 1;
+    /*left := 0;
+    right := len(word) - 1;*/
+    var left, right = 0, len(word) - 1;
     for left < right {
         if (word[left] != word[right]) {
             return false;
