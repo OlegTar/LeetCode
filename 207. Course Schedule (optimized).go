@@ -33,9 +33,6 @@ func canFinish(numCourses int, prerequisites [][]int) bool {
 	edgesTo := make([]int, numCourses)
 
 	for _, edge := range prerequisites {
-		if _, ok := edges[edge[1]]; !ok {
-			edges[edge[1]] = []int{}
-		}
 		edges[edge[1]] = append(edges[edge[1]], edge[0])
 		edgesTo[edge[0]]++
 	}
