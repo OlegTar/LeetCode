@@ -54,7 +54,7 @@ func snakesAndLadders(board [][]int) int {
             queue = queue[1:]
 
             endNeighbor := min(curr + 6, end)
-            if (endNeighbor >= end) {
+            if (endNeighbor == end) {
                 return moves;
             }
 
