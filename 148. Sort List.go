@@ -33,88 +33,49 @@ Follow up: Can you sort the linked list in O(n logn) time and O(1) memory (i.e. 
  * }
  */
 func sortList(head *ListNode) *ListNode {
-    if (head == nil) {
-        return nil;
-    }
-    n := 1;
-    node := head;
-    for node.Next != nil {
-        n++;
-        node = node.Next;
-    }
-
-    dummy := &ListNode{
-        Next: head,
-    }
-
-    return sort(dummy, nil, head, 0, n);
-}
-
-func sort(prev, end, head *ListNode, left, right int) *ListNode {
-    if (right - left <= 1) {
+    if (head == nil || head.Next == nil) {
         return head;
     }
 
-    if (right - left == 2) {
-        if (head.Val > head.Next.Val) {
-            nextNode := head.Next;
-            prev.Next = nextNode;
-            head.Next = nextNode.Next;
-            nextNode.Next = head;
-        }
-        return prev.Next;
+    middleNode := findMiddle(head)
+    left := sortList(head)
+    right := sortList(middleNode)
+    return merge(left, right)
+}
+
+func findMiddle(head *ListNode) *ListNode {
+    slow := head
+    fast := head.Next
+
+    for fast != nil && fast.Next != nil {
+        slow = slow.Next
+        fast = fast.Next.Next
     }
 
-    mid := left + (right - left) / 2
-    rightHalf := head;
-    for i := left; i < mid; i++ {
-        rightHalf = rightHalf.Next
+    mid := slow.Next;
+    slow.Next = nil;
+    return mid;
+}
+
+func merge(list1, list2 *ListNode) *ListNode {
+    dummy := &ListNode{}
+    last := dummy;
+    for list1 != nil && list2 != nil {
+        if list1.Val <= list2.Val {
+            last.Next = list1
+            list1 = list1.Next
+        } else {
+            last.Next = list2
+            list2 = list2.Next
+        }
+        last = last.Next
     }
 
-    head = sort(prev, rightHalf, head, left, mid)    
-    
-    prevRightHalf := head;
-    rightHalf = head;
-    for i := left; i < mid; i++ {
-        prevRightHalf = rightHalf
-        rightHalf = rightHalf.Next
+    if (list1 == nil) {
+        last.Next = list2
+    } else {
+        last.Next = list1
     }
 
-    rightHalf = sort(prevRightHalf, end, rightHalf, mid, right)
-    pointer1 := head;    
-    pointer2 := rightHalf
-    i := left;
-    j := mid
-    last := prev;
-    for i < mid && j < right {
-        if (pointer1.Val <= pointer2.Val) {
-            last.Next = pointer1;
-            pointer1 = pointer1.Next;
-            i++
-        } else {            
-            last.Next = pointer2;
-            pointer2 = pointer2.Next;
-            j++
-        }
-        last = last.Next;
-    }
-    
-    if (j == right) {
-        for i < mid {
-            last.Next = pointer1;
-            pointer1 = pointer1.Next;
-            last = last.Next
-            i++
-        }
-    } else if (i == mid) {
-        for j < right {
-            last.Next = pointer2;
-            pointer2 = pointer2.Next
-            last = last.Next
-            j++
-        }
-    }
-    last.Next = end
-
-    return prev.Next;
+    return dummy.Next;
 }
