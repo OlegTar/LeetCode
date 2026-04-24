@@ -91,15 +91,15 @@ func isInterleave(s1 string, s2 string, s3 string) bool {
         }
     }
 
-    for i := 0; i < len(s3); i++ {
-        for j := 0; j < len(s1); j++ {
-            for k := 0; k < len(s2); k++ {
-                if s3[len_s3 - 1 - i] == s1[len_s1 - 1 - j] && dp[len_s3 - i][len_s1 - j][len_s2 - 1 - k] {
-                    dp[len_s3 - 1 - i][len_s1 - 1 - j][len_s2 - 1 - k] = true
+    for i := len(s3) - 1; i >= 0; i-- {
+        for j := len(s1) - 1; j >= 0; j-- {
+            for k := len(s2) - 1; k >= 0; k-- {
+                if s3[i] == s1[j] && dp[i + 1][j + 1][k] {
+                    dp[i][j][k] = true
                 }
 
-                if s3[len_s3 - 1 - i] == s2[len_s2 - 1 - k] && dp[len_s3 - i][len_s1 - 1 - j][len_s2 - k] {
-                    dp[len_s3 - 1 - i][len_s1 - 1 - j][len_s2 - 1 - k] = true
+                if s3[i] == s2[k] && dp[i + 1][j][k + 1] {
+                    dp[i][j][k] = true
                 }
             }
         }
