@@ -40,7 +40,6 @@ s1, s2, and s3 consist of lowercase English letters.
 
 Follow up: Could you solve it using only O(s2.length) additional memory space?
 */
-import "fmt"
 func isInterleave(s1 string, s2 string, s3 string) bool {
     if len(s3) == 0 {
         return len(s1) == 0 && len(s2) == 0;
@@ -58,15 +57,15 @@ func isInterleave(s1 string, s2 string, s3 string) bool {
         return false;
     }
 
-    dp := make([][][]int, len(s3) + 1)
+    dp := make([][][]bool, len(s3) + 1)
     for i := 0; i < len(dp); i++ {
-        dp[i] = make([][]int, len(s1) + 1)
+        dp[i] = make([][]bool, len(s1) + 1)
         for j := 0; j < len(dp[i]); j++ {
-            dp[i][j] = make([]int, len(s2) + 1)
+            dp[i][j] = make([]bool, len(s2) + 1)
         }
     }
 
-    dp[len(s3)][len(s1)][len(s2)] = 1
+    dp[len(s3)][len(s1)][len(s2)] = true
 
     len_s3, len_s1, len_s2 := len(s3), len(s1), len(s2)
 
@@ -75,7 +74,7 @@ func isInterleave(s1 string, s2 string, s3 string) bool {
         s1_charFromEnd := len_s1 - i - 1
 
         if (s3[s3_charFromEnd] == s1[s1_charFromEnd]) {
-            dp[s3_charFromEnd][s1_charFromEnd][len_s2] = 1
+            dp[s3_charFromEnd][s1_charFromEnd][len_s2] = true
         } else {
             break;
         }
@@ -86,7 +85,7 @@ func isInterleave(s1 string, s2 string, s3 string) bool {
         s2_charFromEnd := len_s2 - i - 1
 
         if (s3[s3_charFromEnd] == s2[s2_charFromEnd]) {
-            dp[s3_charFromEnd][len_s1][s2_charFromEnd] = 1
+            dp[s3_charFromEnd][len_s1][s2_charFromEnd] = true
         } else {
             break;
         }
@@ -95,20 +94,16 @@ func isInterleave(s1 string, s2 string, s3 string) bool {
     for i := 0; i < len(s3); i++ {
         for j := 0; j < len(s1); j++ {
             for k := 0; k < len(s2); k++ {
-                if (dp[len_s3 - 1 - i][len_s1 - 1 - j][len_s2 - 1 - k] != 0) {
-                    continue;
+                if s3[len_s3 - 1 - i] == s1[len_s1 - 1 - j] && dp[len_s3 - i][len_s1 - j][len_s2 - 1 - k] {
+                    dp[len_s3 - 1 - i][len_s1 - 1 - j][len_s2 - 1 - k] = true
                 }
 
-                if s3[len_s3 - 1 - i] == s1[len_s1 - 1 - j] && dp[len_s3 - i][len_s1 - j][len_s2 - 1 - k] == 1 {
-                    dp[len_s3 - 1 - i][len_s1 - 1 - j][len_s2 - 1 - k] = 1
-                }
-
-                if s3[len_s3 - 1 - i] == s2[len_s2 - 1 - k] && dp[len_s3 - i][len_s1 - 1 - j][len_s2 - k] == 1 {
-                    dp[len_s3 - 1 - i][len_s1 - 1 - j][len_s2 - 1 - k] = 1
+                if s3[len_s3 - 1 - i] == s2[len_s2 - 1 - k] && dp[len_s3 - i][len_s1 - 1 - j][len_s2 - k] {
+                    dp[len_s3 - 1 - i][len_s1 - 1 - j][len_s2 - 1 - k] = true
                 }
             }
         }
     }
 
-    return dp[0][0][0] == 1
+    return dp[0][0][0]
 }
