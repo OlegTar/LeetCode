@@ -39,26 +39,15 @@ public class Codec {
         queue.Enqueue(root);
         while (queue.Count > 0)
         {
-            var n = queue.Count;
-            var lastLevel = true;
-            for (var i = 0; i < n; i++)
+            var node = queue.Dequeue();
+            if (node != null)
             {
-                var node = queue.Dequeue();
-                if (node != null)
-                {
-                    sb.Append(node.val.ToString());
-                    
-                    if (node.left != null || node.right != null) 
-                    {
-                        lastLevel = false;
-                    }
-                    queue.Enqueue(node.left);
-                    queue.Enqueue(node.right);
-                }
-            
-                sb.Append(",");
-            }            
-            if (lastLevel) break;            
+                sb.Append(node.val.ToString());
+                queue.Enqueue(node.left);
+                queue.Enqueue(node.right);
+            }
+        
+            sb.Append(",");
         }
         sb.Length--;
         return sb.ToString();
@@ -66,36 +55,33 @@ public class Codec {
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(string data) {
-        int?[] arr = data.Split(",").Select(i => i == ""?(int?)null : int.Parse(i)).ToArray();
-        if (arr.Length == 0) 
+        if (string.IsNullOrEmpty(data)) 
         {
             return null;
         }
 
-        var root = arr[0] == null ? null : new TreeNode(arr[0].Value);        
+        int?[] arr = data.Split(",").Select(i => i == "" ? (int?)null : int.Parse(i)).ToArray();
+
+        var root = new TreeNode(arr[0].Value);        
         var parents = new Queue<TreeNode>();
         parents.Enqueue(root);
         var i = 1;
         while (i < arr.Length)
         {
-            var n = parents.Count;
-            for (var j = 0; j < n; j++) 
+            var parent = parents.Dequeue();
+            parent.left = arr[i] == null ? null : new TreeNode(arr[i].Value);
+            i++;
+            parent.right = arr[i] == null ? null : new TreeNode(arr[i].Value);
+            i++;
+            
+            if (parent.left != null) 
             {
-                var parent = parents.Dequeue();
-                parent.left = arr[i] == null ? null : new TreeNode(arr[i].Value);
-                i++;
-                parent.right = arr[i] == null ? null : new TreeNode(arr[i].Value);
-                i++;
-                
-                if (parent.left != null) 
-                {
-                    parents.Enqueue(parent.left);
-                }
+                parents.Enqueue(parent.left);
+            }
 
-                if (parent.right != null) 
-                {
-                    parents.Enqueue(parent.right);
-                }
+            if (parent.right != null) 
+            {
+                parents.Enqueue(parent.right);
             }
         }
 
