@@ -47,4 +47,11 @@ Output:
 select managers.name from Employee rep JOIN Employee managers
 ON (rep.managerId = managers.id)
 group by managers.Id, managers.name
-having count(*) >= 5
+having count(*) >= 5;
+
+
+/*with reports as (select managerId from Employee
+group by managerId
+having count(*) >= 5)
+select managers.name from Employee managers where managers.Id IN (select managerId from reports)
+*/
